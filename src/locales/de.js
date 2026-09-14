@@ -33,7 +33,17 @@ export default {
 
   hero: {
     eyebrow: "Nextenic GmbH · Bern, Schweiz",
-    headline: "Die Post, die Sie senden. Die Pakete, die Sie versenden.",
+    /* Not a translation of the English headline, a replacement for it.
+    
+       "Die Post, die Sie senden" was a calque and read wrong twice over: "die
+       Post" in Swiss usage means the postal company, so it sounded like you send
+       Swiss Post itself, and "senden" next to "versenden" is a near-duplicate, so
+       the English contrast between mail and shipping vanished into repetition
+       across four lines of relative clauses.
+    
+       Two possessive noun phrases keep the parallel rhythm of the original, name
+       the two products unambiguously, and fit on two lines. */
+    headline: "Ihre E-Mails. Ihre Pakete.",
     lead: "Nextenic ist ein Softwareunternehmen in Bern. Wir entwickeln und betreiben zwei Produkte: E-Mail-Hosting auf Ihrer eigenen Domain und Versandetiketten der Schweizerischen Post direkt in Shopify.",
     ctaPrimary: "Beide Produkte ansehen",
     ctaSecondary: "Kontakt aufnehmen",

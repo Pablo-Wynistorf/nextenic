@@ -27,7 +27,9 @@ export default {
 
   hero: {
     eyebrow: "Nextenic GmbH · Berna, Svizzera",
-    headline: "La posta che invia. I pacchi che spedisce.",
+    /* Same fix as German. "La posta" reads as the postal service, and "che
+       invia" in the formal register is both ambiguous and stilted. */
+    headline: "Le sue e-mail. I suoi pacchi.",
     lead: "Nextenic è un’azienda di software con sede a Berna. Sviluppiamo e gestiamo due prodotti: hosting e-mail sul suo dominio ed etichette di spedizione della Posta Svizzera direttamente in Shopify.",
     ctaPrimary: "Vedi entrambi i prodotti",
     ctaSecondary: "Contattaci",

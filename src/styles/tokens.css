@@ -219,6 +219,11 @@
     scroll-behavior: smooth;
     /* Anchor navigation must not tuck headings under the fixed header. */
     scroll-padding-top: 6rem;
+    /* Safety net against horizontal overflow. `clip` rather than `hidden`
+       because `hidden` establishes a scroll container, which quietly breaks
+       position: sticky further down the page (the sticky product identity
+       column, for one). `clip` cuts the overflow without changing behaviour. */
+    overflow-x: clip;
   }
 
   body {
@@ -231,7 +236,9 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
+    /* Same reasoning as html above. `clip` used here too so a rogue absolutely
+       positioned decoration in a nested section cannot open a scrollbar. */
+    overflow-x: clip;
   }
 
   h1,

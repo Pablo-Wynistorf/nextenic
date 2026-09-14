@@ -29,7 +29,9 @@ export default {
 
   hero: {
     eyebrow: "Nextenic GmbH · Berne, Suisse",
-    headline: "Le courrier que vous envoyez. Les colis que vous expédiez.",
+    /* "Le courrier que vous envoyez" is correct French but wordy, and it wrapped
+       to four lines. Shortened to match the German and Italian pattern. */
+    headline: "Vos courriels. Vos colis.",
     lead: "Nextenic est une société de logiciels établie à Berne. Nous développons et exploitons deux produits : l’hébergement de courriel sur votre propre domaine, et les étiquettes d’expédition de La Poste Suisse directement dans Shopify.",
     ctaPrimary: "Voir les deux produits",
     ctaSecondary: "Nous contacter",

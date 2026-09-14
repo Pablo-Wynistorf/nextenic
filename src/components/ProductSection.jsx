@@ -55,7 +55,14 @@ export default function ProductSection({ product, index, reverse = false }) {
       className="scroll-mt-24 border-t border-line py-section-sm"
     >
       <div className="shell">
-        <div className="grid items-start gap-x-10 gap-y-12 lg:grid-cols-12">
+        {/* [&>*]:min-w-0 is load-bearing on mobile. Without it the grid falls
+            back to grid-auto-columns: auto, which sizes tracks by min-content,
+            and each grid item defaults to min-width: auto. The 1600px intrinsic
+            width of the product screenshots then pushes one track wider than the
+            viewport, and the whole page overflows horizontally by roughly 4x on
+            a phone. min-width: 0 lets the track shrink and the img's w-full plus
+            max-width: 100% do their job. */}
+        <div className="grid items-start gap-x-10 gap-y-12 lg:grid-cols-12 [&>*]:min-w-0">
           {/* --- Identity column ------------------------------------------- */}
           <div
             className={cn(

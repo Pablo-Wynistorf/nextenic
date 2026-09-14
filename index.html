@@ -9,7 +9,26 @@
       name="description"
       content="Nextenic GmbH is a software company in Bern, Switzerland. We build and run two products: MailRift, email hosting on your own domain, and Swiss Shipping Labels, Swiss Post labels inside Shopify."
     />
-    <link rel="canonical" href="https://nextenic.ch/" />
+    <!-- Canonical host. Both nextenic domains resolve here today (nextenic.ch
+         redirects to www.nextenic.com), so the canonical, the alternates and
+         the sitemap all point at .com to avoid a canonical/redirect mismatch. -->
+    <link rel="canonical" href="https://www.nextenic.com/" />
+
+    <!-- Let crawlers index the page and show large image/text previews. -->
+    <meta
+      name="robots"
+      content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1"
+    />
+
+    <!-- Language alternates. The site is one SPA served in four languages,
+         pinned with ?lang=; x-default is the English home. Keep these in step
+         with public/sitemap.xml. -->
+    <link rel="alternate" hreflang="en" href="https://www.nextenic.com/" />
+    <link rel="alternate" hreflang="de-CH" href="https://www.nextenic.com/?lang=de" />
+    <link rel="alternate" hreflang="fr-CH" href="https://www.nextenic.com/?lang=fr" />
+    <link rel="alternate" hreflang="it-CH" href="https://www.nextenic.com/?lang=it" />
+    <link rel="alternate" hreflang="x-default" href="https://www.nextenic.com/" />
+
     <meta name="theme-color" content="#08090b" />
 
     <!-- Icons. favicon.ico carries hand-tuned 16/32/48 bitmaps for browsers that
@@ -21,12 +40,25 @@
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Nextenic GmbH" />
+    <meta property="og:url" content="https://www.nextenic.com/" />
     <meta property="og:title" content="Nextenic GmbH — software products from Bern" />
     <meta
       property="og:description"
       content="Two products, built and operated in Bern: MailRift for email hosting on your own domain, and Swiss Shipping Labels for Swiss Post labels inside Shopify."
     />
+    <meta property="og:image" content="https://www.nextenic.com/apple-touch-icon.png" />
+    <meta property="og:image:alt" content="Nextenic GmbH" />
+    <meta property="og:locale" content="en" />
+    <meta property="og:locale:alternate" content="de_CH" />
+    <meta property="og:locale:alternate" content="fr_CH" />
+    <meta property="og:locale:alternate" content="it_CH" />
     <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Nextenic GmbH — software products from Bern" />
+    <meta
+      name="twitter:description"
+      content="Two products, built and operated in Bern: MailRift for email hosting on your own domain, and Swiss Shipping Labels for Swiss Post labels inside Shopify."
+    />
+    <meta name="twitter:image" content="https://www.nextenic.com/apple-touch-icon.png" />
 
     <!-- Colour mode, applied before first paint.
          Must match resolveTheme() in src/lib/theme.jsx: dark is the base theme and
@@ -66,22 +98,81 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Nextenic GmbH",
-        "url": "https://nextenic.ch",
-        "sameAs": ["https://nextenic.com"],
-        "email": "contact@nextenic.ch",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Bern",
-          "addressCountry": "CH"
-        },
-        "owns": [
-          { "@type": "SoftwareApplication", "name": "MailRift", "url": "https://mailrift.io" },
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://www.nextenic.com/#organization",
+            "name": "Nextenic GmbH",
+            "legalName": "Nextenic GmbH",
+            "url": "https://www.nextenic.com/",
+            "sameAs": ["https://nextenic.ch/"],
+            "email": "contact@nextenic.com",
+            "description": "Software company in Bern, Switzerland, building and operating two products: MailRift email hosting and Swiss Shipping Labels for Shopify.",
+            "foundingLocation": {
+              "@type": "Place",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Bern",
+                "addressCountry": "CH"
+              }
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Staufferstrasse 30",
+              "postalCode": "3006",
+              "addressLocality": "Bern",
+              "addressCountry": "CH"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "email": "contact@nextenic.com",
+              "contactType": "customer support",
+              "availableLanguage": ["en", "de", "fr", "it"]
+            },
+            "owns": [
+              { "@id": "https://mailrift.io/#software" },
+              { "@id": "https://swiss-shipping-labels.ch/#software" }
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://www.nextenic.com/#website",
+            "url": "https://www.nextenic.com/",
+            "name": "Nextenic GmbH",
+            "inLanguage": ["en", "de-CH", "fr-CH", "it-CH"],
+            "publisher": { "@id": "https://www.nextenic.com/#organization" }
+          },
           {
             "@type": "SoftwareApplication",
+            "@id": "https://mailrift.io/#software",
+            "name": "MailRift",
+            "url": "https://mailrift.io",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Web, iOS, Android",
+            "description": "Email hosting on your own domain with webmail, calendar, contacts, forwarding and a REST API. Priced per domain rather than per user.",
+            "offers": {
+              "@type": "Offer",
+              "price": "4.90",
+              "priceCurrency": "CHF",
+              "description": "From CHF 4.90 per month per domain"
+            },
+            "publisher": { "@id": "https://www.nextenic.com/#organization" }
+          },
+          {
+            "@type": "SoftwareApplication",
+            "@id": "https://swiss-shipping-labels.ch/#software",
             "name": "Swiss Shipping Labels",
-            "url": "https://swiss-shipping-labels.ch"
+            "url": "https://swiss-shipping-labels.ch",
+            "applicationCategory": "BusinessApplication",
+            "operatingSystem": "Shopify",
+            "description": "A Shopify app that creates and prints Swiss Post shipping labels and digital stamps from your orders, with address checking, customs forms and tracking.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "CHF",
+              "description": "Free to install"
+            },
+            "publisher": { "@id": "https://www.nextenic.com/#organization" }
           }
         ]
       }
