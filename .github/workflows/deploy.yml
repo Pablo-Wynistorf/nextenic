@@ -34,11 +34,35 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Runs before the build, and its side effect matters more than its output:
+      # it sets the repository's Pages build type to "workflow", which is what
+      # stops GitHub's legacy branch build from publishing as well.
+      #
+      # While the repository was still branch-based, a push started this workflow
+      # AND the legacy pages-build-deployment together. Both emit an artifact
+      # named github-pages; the legacy one finished last and published the raw
+      # repository root, so the deployed index.html still pointed at
+      # /src/main.jsx and the browser refused it as "text/jsx".
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
       - name: Build
         run: npm run build
 
-      - name: Configure Pages
-        uses: actions/configure-pages@v5
+      - name: Verify the build output before uploading
+        # Cheap guard against publishing a tree that only looks right. If the
+        # artifact ever contains the dev entry point again, fail here rather than
+        # shipping a site that cannot boot.
+        run: |
+          test -f dist/index.html || { echo "dist/index.html missing"; exit 1; }
+          test -f dist/404.html   || { echo "dist/404.html missing"; exit 1; }
+          if grep -q "/src/main.jsx" dist/index.html; then
+            echo "dist/index.html references the dev entry point; refusing to deploy."
+            exit 1
+          fi
+          grep -q "assets/" dist/index.html || { echo "no hashed assets referenced"; exit 1; }
+          echo "CNAME to be published: $(cat dist/CNAME 2>/dev/null || echo none)"
+          ls -la dist
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

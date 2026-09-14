@@ -276,19 +276,37 @@ GitHub Pages with `actions/deploy-pages`. It can also be run manually via
 Before the first run, set **Settings → Pages → Build and deployment → Source** to
 **GitHub Actions**.
 
-### Custom domain
+### Custom domain: only one, and the CNAME file decides it
 
-`public/CNAME` contains `www.nextenic.ch`, the primary hostname. GitHub Pages
-accepts one CNAME entry, so that file sets the canonical host; point the other
-hostnames at the same deployment with DNS and GitHub will redirect them.
+**GitHub Pages supports exactly one custom domain per site.** `public/CNAME` ends
+up at `dist/CNAME` and therefore at the root of the deployed artifact, and Pages
+reads it on every deployment and *overwrites* the configured domain with it.
 
-For `www` as primary you want a `CNAME` record for `www` pointing at
-`<user>.github.io`, plus the four `A` records (or an `ALIAS`/`ANAME`) on the apex
-so `nextenic.ch` redirects to `www`. Repeat for `nextenic.com`. The site works on
-all four hostnames either way, since the per-domain behaviour is resolved from the
-hostname at runtime rather than at build time.
+That makes this file load-bearing and easy to get wrong: if it disagrees with the
+domain currently configured in the repository settings, the next deploy silently
+switches the site to the file's value and the previous hostname starts returning
+404. It currently contains `www.nextenic.com`, matching what is live.
+
+To change the primary hostname, edit that file, push, and update DNS. Do not
+change it in the GitHub UI alone, because the next deploy will put it back.
 
 Because the site is served from the domain root, the Vite base path stays `/`.
+
+### The second domain has to redirect
+
+Since only one hostname can be the Pages custom domain, the other cannot serve
+content: Pages answers 404 for a `Host` it does not recognise, which is exactly
+what `www.nextenic.ch` does today. All four hostnames already resolve to
+Cloudflare in front of Pages, so the second domain wants a Cloudflare redirect
+rule to the primary, plus apex to `www` for both.
+
+**This limits what the per-domain logic can do.** `src/lib/host.js` picks the
+contact address and the GA measurement ID from the hostname, which assumed both
+domains serve the site. With a redirect, visitors always land on the primary, so
+in practice only the primary's values are ever used. The logic is kept because it
+is correct and costs nothing, and it starts mattering the moment both hostnames
+serve content, but do not expect traffic in the `.ch` GA stream while `.ch`
+redirects to `.com`.
 
 If you drop the custom domain and serve from `https://<user>.github.io/<repo>/`
 instead, delete `public/CNAME` and set the base path when building:
