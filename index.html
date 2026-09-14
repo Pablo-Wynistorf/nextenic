@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>Nextenic GmbH — software for the mail you send and the parcels you ship</title>
+    <meta
+      name="description"
+      content="Nextenic GmbH is a software company in Bern, Switzerland. We build and run two products: MailRift, email hosting on your own domain, and Swiss Shipping Labels, Swiss Post labels inside Shopify."
+    />
+    <link rel="canonical" href="https://nextenic.ch/" />
+    <meta name="theme-color" content="#08090b" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Nextenic GmbH" />
+    <meta property="og:title" content="Nextenic GmbH — software products from Bern" />
+    <meta
+      property="og:description"
+      content="Two products, built and operated in Bern: MailRift for email hosting on your own domain, and Swiss Shipping Labels for Swiss Post labels inside Shopify."
+    />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- Colour mode, applied before first paint.
+         Must match resolveTheme() in src/lib/theme.js: dark is the base theme and
+         `.light` is the opt-in class. Doing this in React instead would show a
+         dark flash to every light-mode visitor. -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("nextenic:theme");
+          var light =
+            stored === "light" ||
+            (stored !== "dark" &&
+              window.matchMedia("(prefers-color-scheme: light)").matches);
+          if (light) {
+            document.documentElement.classList.add("light");
+            document.documentElement.style.colorScheme = "light";
+            var meta = document.querySelector('meta[name="theme-color"]');
+            if (meta) meta.setAttribute("content", "#fbfaf8");
+          }
+        } catch (e) {
+          /* Storage unavailable — dark base theme applies. */
+        }
+      })();
+    </script>
+
+    <!-- Typeface pairing, see README for the reasoning:
+         Bricolage Grotesque for display, Inter Tight for text,
+         JetBrains Mono for the small technical labels. Only the weights
+         actually used are requested. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..700&family=Inter+Tight:wght@400;500&family=JetBrains+Mono:wght@400&display=swap"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Nextenic GmbH",
+        "url": "https://nextenic.ch",
+        "sameAs": ["https://nextenic.com"],
+        "email": "contact@nextenic.ch",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Bern",
+          "addressCountry": "CH"
+        },
+        "owns": [
+          { "@type": "SoftwareApplication", "name": "MailRift", "url": "https://mailrift.io" },
+          {
+            "@type": "SoftwareApplication",
+            "name": "Swiss Shipping Labels",
+            "url": "https://swiss-shipping-labels.ch"
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>
+      <h1>Nextenic GmbH</h1>
+      <p>
+        Nextenic GmbH is a software company in Bern, Switzerland. We build and run
+        two products.
+      </p>
+      <ul>
+        <li>
+          <a href="https://mailrift.io">MailRift</a> — email hosting on your own
+          domain, priced per domain rather than per user. From CHF 4.90 per month
+          per domain, hosted in Germany.
+        </li>
+        <li>
+          <a href="https://swiss-shipping-labels.ch">Swiss Shipping Labels</a> — a
+          Shopify app for creating Swiss Post shipping labels and digital stamps
+          from your orders. Free to install; also on the
+          <a href="https://apps.shopify.com/swiss-shipping-labels">Shopify App Store</a>.
+        </li>
+      </ul>
+      <p>Contact: <a href="mailto:contact@nextenic.ch">contact@nextenic.ch</a></p>
+    </noscript>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

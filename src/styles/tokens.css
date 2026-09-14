@@ -1,0 +1,405 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Nextenic design tokens
+   --------------------------------------------------------------------------
+   Every value the site uses is declared here. Tailwind's default palette,
+   default font stack and default spacing ramp are all replaced rather than
+   extended, so an accidental `text-blue-500` or `font-sans` fallback cannot
+   silently ship.
+
+   Palette rationale: a near-neutral graphite canvas with exactly one accent,
+   a vermilion borrowed from Swiss poster typography. The two products already
+   own strong colours of their own (MailRift indigo, Swiss Shipping Labels
+   Swiss Post yellow); the umbrella brand deliberately stays achromatic so
+   those product colours read as theirs and not as a third competing hue.
+   ========================================================================== */
+
+@theme {
+  /* --- Reset Tailwind's defaults so nothing leaks through ---------------- */
+  --color-*: initial;
+  --font-*: initial;
+  --breakpoint-*: initial;
+  --shadow-*: initial;
+  --radius-*: initial;
+  --ease-*: initial;
+
+  /* --- Breakpoints ------------------------------------------------------- */
+  /* 360px is the narrowest supported width and gets the base styles.        */
+  --breakpoint-xs: 26.5rem; /* 424px — phablet, lets the hero breathe       */
+  --breakpoint-sm: 40rem; /* 640px                                          */
+  --breakpoint-md: 48rem; /* 768px                                          */
+  --breakpoint-lg: 64rem; /* 1024px — layout switches to asymmetric grid    */
+  --breakpoint-xl: 80rem; /* 1280px                                         */
+  --breakpoint-2xl: 96rem; /* 1536px                                        */
+
+  /* --- Graphite ramp ----------------------------------------------------- */
+  /* Very slightly blue-cool in the shadows, warm at the light end, so the
+     dark theme does not look like flat #000 and the light theme does not
+     look like clinical #fff.                                               */
+  --color-graphite-950: #08090b;
+  --color-graphite-900: #0d0f12;
+  --color-graphite-850: #12151a;
+  --color-graphite-800: #191d23;
+  --color-graphite-700: #242931;
+  --color-graphite-600: #333a44;
+  --color-graphite-500: #4a525e;
+  --color-graphite-400: #6b7482;
+  --color-graphite-300: #929aa6;
+  --color-graphite-200: #bfc5cd;
+  --color-graphite-150: #d8dce1;
+  --color-graphite-100: #e8eaed;
+  --color-graphite-050: #f3f4f6;
+  --color-paper: #fbfaf8;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* --- Accent: vermilion ------------------------------------------------- */
+  --color-signal-300: #ffa98f;
+  --color-signal-400: #ff7d5c;
+  --color-signal-500: #ff4a26;
+  --color-signal-600: #e63a12;
+  --color-signal-700: #bd2c0b;
+
+  /* --- Product brand colours (used only inside their own sections) ------- */
+  /* Sampled from the products' own UIs; see docs/product-research.md.       */
+  --color-mailrift: #6c5ce7;
+  --color-mailrift-soft: #8b7cf0;
+  --color-swisspost: #ffd800;
+  --color-swisspost-ink: #1a1a1a;
+
+  /* --- Typography -------------------------------------------------------- */
+  --font-display: "Bricolage Grotesque", "Inter Tight", ui-sans-serif, system-ui,
+    sans-serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+
+  /* Type ramp. Display sizes are fluid; body sizes are fixed so line length
+     and rhythm stay predictable.                                           */
+  --text-micro: 0.6875rem; /* 11px — mono eyebrows only                     */
+  --text-micro--line-height: 1.2;
+  --text-micro--letter-spacing: 0.14em;
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.5;
+  --text-body-sm: 0.9375rem;
+  --text-body-sm--line-height: 1.6;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.65;
+  --text-body-lg: 1.1875rem;
+  --text-body-lg--line-height: 1.6;
+  --text-lead: clamp(1.25rem, 0.9rem + 1.1vw, 1.5rem);
+  --text-lead--line-height: 1.5;
+  --text-h4: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-h4--line-height: 1.35;
+  --text-h3: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  --text-h3--line-height: 1.2;
+  --text-h2: clamp(2rem, 1.4rem + 2.6vw, 3.25rem);
+  --text-h2--line-height: 1.06;
+  --text-h2--letter-spacing: -0.025em;
+  --text-h1: clamp(2.75rem, 1.5rem + 5.4vw, 6rem);
+  --text-h1--line-height: 0.94;
+  --text-h1--letter-spacing: -0.035em;
+
+  /* --- Spacing ----------------------------------------------------------- */
+  /* 4px base unit, plus named steps for page rhythm so section padding is
+     never an ad-hoc number.                                                */
+  --spacing: 0.25rem;
+  --spacing-gutter: clamp(1.25rem, 0.5rem + 3vw, 2.5rem);
+  --spacing-section: clamp(5rem, 3rem + 8vw, 11rem);
+  --spacing-section-sm: clamp(3.5rem, 2rem + 5vw, 6rem);
+  --spacing-measure: 34rem; /* comfortable prose column                     */
+  --spacing-shell: 82.5rem; /* 1320px max content width                     */
+
+  /* Container namespace, so max-w-measure / max-w-shell resolve. */
+  --container-measure: 34rem;
+  --container-prose: 42rem;
+  --container-shell: 82.5rem;
+
+  /* --- Radii ------------------------------------------------------------- */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 999rem;
+
+  /* --- Easing ------------------------------------------------------------ */
+  /* Physical curves: fast out, settled landing. No linear, no ease-in-out.  */
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.32, 0.64, 1);
+
+  /* --- Shadows ----------------------------------------------------------- */
+  --shadow-lift: 0 1px 2px rgb(8 9 11 / 0.06), 0 8px 24px -12px rgb(8 9 11 / 0.18);
+  --shadow-panel: 0 2px 4px rgb(8 9 11 / 0.08), 0 24px 64px -24px rgb(8 9 11 / 0.35);
+  --shadow-screenshot: 0 1px 1px rgb(8 9 11 / 0.1), 0 40px 80px -32px rgb(8 9 11 / 0.45);
+}
+
+/* ==========================================================================
+   Semantic surface tokens
+   --------------------------------------------------------------------------
+   Components reference these, never the raw ramp, so both colour modes stay
+   in sync. Dark is the default (see README for the reasoning); .light is the
+   opt-out and is applied to <html> by the theme controller.
+   ========================================================================== */
+
+@layer base {
+  :root {
+    --canvas: var(--color-graphite-950);
+    --canvas-raised: var(--color-graphite-900);
+    --canvas-sunken: #050608;
+    --surface: var(--color-graphite-850);
+    --surface-hover: var(--color-graphite-800);
+    --line: color-mix(in oklab, var(--color-graphite-200) 14%, transparent);
+    --line-strong: color-mix(in oklab, var(--color-graphite-200) 26%, transparent);
+    --text-primary: #f6f7f8;
+    --text-secondary: var(--color-graphite-300);
+    --text-tertiary: var(--color-graphite-400);
+    --accent: var(--color-signal-500);
+    --accent-hover: var(--color-signal-400);
+    --accent-contrast: #140602;
+    --grid-line: color-mix(in oklab, var(--color-graphite-200) 9%, transparent);
+    color-scheme: dark;
+  }
+
+  :root.light {
+    --canvas: var(--color-paper);
+    --canvas-raised: var(--color-white);
+    --canvas-sunken: var(--color-graphite-050);
+    --surface: var(--color-white);
+    --surface-hover: var(--color-graphite-050);
+    --line: color-mix(in oklab, var(--color-graphite-600) 16%, transparent);
+    --line-strong: color-mix(in oklab, var(--color-graphite-600) 32%, transparent);
+    --text-primary: var(--color-graphite-950);
+    --text-secondary: var(--color-graphite-500);
+    --text-tertiary: var(--color-graphite-400);
+    /* One step darker in light mode: #ff4a26 on paper is only 3.1:1, which
+       fails AA for text. signal-700 on paper is 5.3:1.                      */
+    --accent: var(--color-signal-700);
+    --accent-hover: var(--color-signal-600);
+    --accent-contrast: #ffffff;
+    --grid-line: color-mix(in oklab, var(--color-graphite-600) 11%, transparent);
+    color-scheme: light;
+  }
+}
+
+/* Expose the semantic tokens as Tailwind utilities: bg-canvas, text-secondary,
+   border-line, and so on. `inline` keeps them referencing the live variables
+   so the theme switch needs no re-render. */
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-raised: var(--canvas-raised);
+  --color-canvas-sunken: var(--canvas-sunken);
+  --color-surface: var(--surface);
+  --color-surface-hover: var(--surface-hover);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-primary: var(--text-primary);
+  --color-secondary: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-grid-line: var(--grid-line);
+}
+
+/* ==========================================================================
+   Base styles
+   ========================================================================== */
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--line);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    /* Anchor navigation must not tuck headings under the fixed header. */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    font-feature-settings: "cv11" 1, "ss01" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Visible, deliberate focus ring — never removed, only styled. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: var(--radius-xs);
+  }
+
+  /* Mouse users do not get the ring; keyboard users always do. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--accent-contrast);
+  }
+
+  img,
+  video,
+  canvas {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Reserve space for media so nothing shifts while decoding. */
+  img[width][height] {
+    height: auto;
+  }
+
+  svg {
+    flex-shrink: 0;
+  }
+}
+
+/* ==========================================================================
+   Reduced motion
+   --------------------------------------------------------------------------
+   The JS side reads the same query and skips animation setup entirely
+   (see src/lib/motion.js). This block is the belt-and-braces CSS half: it
+   also neutralises the GSAP-driven React Bits components, which write inline
+   transforms.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Anything the motion libraries faded or offset must end up visible. */
+  [data-motion] {
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* ==========================================================================
+   Utilities
+   ========================================================================== */
+
+@utility shell {
+  width: 100%;
+  max-width: var(--spacing-shell);
+  margin-inline: auto;
+  padding-inline: var(--spacing-gutter);
+}
+
+/* Hairline technical grid. Used at low opacity as a structural backdrop
+   instead of a gradient blob. */
+@utility grid-rule {
+  background-image: linear-gradient(
+      to right,
+      var(--grid-line) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+  background-size: 5.5rem 5.5rem;
+}
+
+/* Fine film grain, drawn once as an SVG data URI. Breaks up the large flat
+   dark areas that otherwise band on cheap panels. */
+@utility grain {
+  position: relative;
+}
+@utility grain-layer {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+/* Scroll affordance in the hero: a short, slow nudge downward. Long pause
+   between repeats so it reads as a hint rather than a blinking cursor. */
+@utility animate-hint {
+  animation: hint-nudge 2.8s var(--ease-out-expo) infinite;
+}
+
+@keyframes hint-nudge {
+  0%,
+  70%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.75;
+  }
+  82% {
+    transform: translateY(0.28rem);
+    opacity: 1;
+  }
+}
+
+/* Mobile menu items rise in sequence. The delay is set inline per item so the
+   stagger does not need a rule per index. Skipped entirely under reduced
+   motion, where the class is not applied at all. */
+@utility motion-item {
+  animation: motion-item-in 0.5s var(--ease-out-expo) both;
+}
+
+@keyframes motion-item-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.75rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Screen-reader-only, but focusable (used by the skip link). */
+@utility sr-only-focusable {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+
+  &:focus {
+    position: fixed;
+    width: auto;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    clip-path: none;
+    white-space: normal;
+  }
+}
