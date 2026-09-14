@@ -22,6 +22,13 @@ import { prefersReducedMotion } from '@/lib/motion';
  *   2. Callers must pass colours. The registry defaults are #5227FF and #FF9FFC —
  *      the purple-to-pink gradient this site is specifically avoiding.
  *   3. Device pixel ratio capped at 1.5, down from 2.
+ *   4. Pointer tracking moved from the canvas to the window. As a background
+ *      layer the canvas is never the element under the cursor, so the original
+ *      listeners never fired and the mouse reactivity was dead. See the comment
+ *      at the listeners for the detail.
+ *   5. The reference ships a WebThreads.css for its container class; the same
+ *      rules (relative, full size, overflow hidden) are applied as utilities on
+ *      the wrapper here, so there is no stylesheet to import.
  *
  * Kept from the original: it already pauses its render loop when scrolled out of
  * view and when the tab is hidden, which is the main thing you would otherwise
@@ -272,21 +279,48 @@ const WebThreads = ({
     let currentActive = 0;
     let targetActive = 0;
 
-    const onMouseMove = e => {
+    /* Pointer tracking is bound to the window, not to the canvas.
+    
+       The reference implementation listens on the canvas itself, which only works
+       when the canvas is the topmost element under the cursor. Here it is a
+       background layer: it sits at -z-10 inside a pointer-events-none wrapper,
+       underneath the headline, the buttons and a scrim. It therefore received no
+       mousemove, mouseenter or mouseleave at all, uMouseActive stayed at 0, and
+       the fan never reacted.
+    
+       Listening on the window and converting to canvas-relative coordinates fixes
+       that without making the artwork interactive: the wrapper keeps
+       pointer-events-none, so the hero buttons and links still get every click.
+    
+       Coordinates are normalised against the canvas rect and clamped, so the
+       effect still behaves when the cursor is beside the canvas rather than over
+       it. Active fades out only when the pointer leaves the document. */
+    const setFromEvent = (event) => {
       const rect = canvas.getBoundingClientRect();
-      targetMouse[0] = (e.clientX - rect.left) / rect.width;
-      targetMouse[1] = 1.0 - (e.clientY - rect.top) / rect.height;
+      if (rect.width === 0 || rect.height === 0) return;
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = 1.0 - (event.clientY - rect.top) / rect.height;
+      targetMouse[0] = Math.min(Math.max(x, -0.25), 1.25);
+      targetMouse[1] = Math.min(Math.max(y, -0.25), 1.25);
       targetActive = 1;
     };
-    const onMouseEnter = () => {
-      targetActive = 1;
+
+    const onPointerMove = (event) => {
+      if (event.pointerType === 'touch') return;
+      setFromEvent(event);
     };
-    const onMouseLeave = () => {
+    /* Cursor left the window entirely: ease the pinch back to its resting point
+       instead of freezing it wherever the pointer happened to exit. */
+    const onPointerOut = (event) => {
+      if (!event.relatedTarget && !event.toElement) targetActive = 0;
+    };
+    const onBlur = () => {
       targetActive = 0;
     };
-    canvas.addEventListener('mousemove', onMouseMove);
-    canvas.addEventListener('mouseenter', onMouseEnter);
-    canvas.addEventListener('mouseleave', onMouseLeave);
+
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+    document.addEventListener('pointerout', onPointerOut);
+    window.addEventListener('blur', onBlur);
 
     let raf = 0;
     let isVisible = true;
@@ -336,9 +370,9 @@ const WebThreads = ({
       ro.disconnect();
       io.disconnect();
       document.removeEventListener('visibilitychange', onVisibility);
-      canvas.removeEventListener('mousemove', onMouseMove);
-      canvas.removeEventListener('mouseenter', onMouseEnter);
-      canvas.removeEventListener('mouseleave', onMouseLeave);
+      window.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('pointerout', onPointerOut);
+      window.removeEventListener('blur', onBlur);
       ctxMap.delete(container);
       try {
         container.removeChild(canvas);

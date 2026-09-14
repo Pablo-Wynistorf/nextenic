@@ -12,6 +12,13 @@
     <link rel="canonical" href="https://nextenic.ch/" />
     <meta name="theme-color" content="#08090b" />
 
+    <!-- Icons. favicon.ico carries hand-tuned 16/32/48 bitmaps for browsers that
+         still prefer it; favicon.svg is what modern browsers pick and is the one
+         to edit. Vite rewrites these paths against the configured base. -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Nextenic GmbH" />
     <meta property="og:title" content="Nextenic GmbH — software products from Bern" />
@@ -22,7 +29,7 @@
     <meta name="twitter:card" content="summary" />
 
     <!-- Colour mode, applied before first paint.
-         Must match resolveTheme() in src/lib/theme.js: dark is the base theme and
+         Must match resolveTheme() in src/lib/theme.jsx: dark is the base theme and
          `.light` is the opt-in class. Doing this in React instead would show a
          dark flash to every light-mode visitor. -->
     <script>
@@ -102,6 +109,7 @@
         </li>
       </ul>
       <p>Contact: <a href="mailto:contact@nextenic.ch">contact@nextenic.ch</a></p>
+      <p>Imprint and privacy policy are available at /impressum and /datenschutz.</p>
     </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>

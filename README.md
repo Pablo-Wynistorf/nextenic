@@ -176,30 +176,96 @@ language-neutral — URLs, image paths, brand colours, product names — so ther
 one copy of it rather than four.
 
 German uses Swiss orthography (`ss`, never `ß`). All four address the reader
-formally. Brand names are never translated, and neither are the page titles
-*Impressum* and *Datenschutz*, which are the terms Swiss visitors look for
-regardless of the surrounding language.
+formally. Brand names are never translated.
+
+### House style: no dashes
+
+No em or en dashes anywhere in visitor-facing copy. Use a colon where the second
+clause explains the first, a comma for an aside, or a full stop for two sentences.
+This is enforced by review, not tooling; the parity script under "Verification
+status" also reports any string containing one.
 
 Notes addressed to you rather than to visitors are prefixed `TO FILL` and stay in
 English in every locale.
 
 ## Legal pages
 
-`/impressum` and `/datenschutz` are scaffolded with the real company details —
-Staufferstrasse 30, 3006 Bern, managing director Pablo Wynistorf — and state
-plainly that the UID and VAT number are not yet assigned.
+`/impressum` and `/datenschutz` are consolidated from the legal text the company
+already publishes on its own products, not drafted here:
 
-Everything still needed from you is wrapped in a `<Placeholder>`, which renders as
-a highlighted mark so it cannot be missed. Search the locale files for `TO FILL`.
-The privacy page already states what is verifiable from this codebase: no cookies,
-no analytics, no contact form, preferences kept in `localStorage`.
+- **`swiss-shipping-labels.ch/impressum`** — operator, address, the applicable-law
+  clause (which it already publishes in all four of our languages) and the Swiss
+  Post disclaimer.
+- **`mailrift.io/imprint`** — legal form and registration, liability for content,
+  liability for links, copyright, and the AWS Frankfurt hosting statement.
+- **`mailrift.io/privacy`** — the rights list, using the same GDPR/FADP article
+  pairings it cites.
 
-## Contact address
+Two items are *pending* rather than unwritten and the pages say so: the EU Art. 27
+representative (MailRift's own imprint still marks it `[TO BE APPOINTED]`) and the
+commercial register entry.
 
-`contact@nextenic.ch` or `contact@nextenic.com`, chosen at runtime from the
-hostname (`src/lib/contact.js`), because both domains serve the same build. Anything
-that cannot be resolved at runtime — the JSON-LD in `index.html` — uses the `.ch`
-address, matching the canonical URL.
+Three `TO FILL` notes remain, each wrapped in a `<Placeholder>` that renders as a
+highlighted mark so it cannot be missed:
+
+1. A Swiss lawyer should review both pages before launch.
+2. The retention period for enquiry correspondence.
+3. Whether to keep Google Fonts or self-host them.
+
+### Unresolved: "GmbH" versus the published legal form
+
+The site chrome says **Nextenic GmbH**. Both product imprints say **sole
+proprietorship (Einzelunternehmen), not entered in the Swiss Commercial Register,
+no UID, no VAT registration**, operated by Pablo Wynistorf at the same Bern
+address.
+
+Both cannot be true — a Swiss GmbH exists only once registered, and would have a
+UID. The Impressum therefore reproduces the published legal form rather than
+asserting a registration the register would not show. Resolve this before launch:
+either the GmbH is still in formation, in which case the suffix should not appear
+publicly yet, or the imprints on both products are out of date. See
+`docs/product-research.md` §3a.
+
+## Two domains, one build
+
+The site is served on nextenic.ch and nextenic.com from a single deployment, so
+anything that differs per domain is resolved at runtime from the hostname.
+`src/lib/host.js` does that detection and both consumers share it.
+
+Matching is on the registrable domain, so `www` and apex behave identically:
+`www.nextenic.com`, `nextenic.com` and any other subdomain all resolve to `com`.
+Anything unrecognised, which includes `localhost` and `*.github.io` preview
+builds, falls back to `ch`.
+
+| Host | Contact address | Analytics |
+| --- | --- | --- |
+| `www.nextenic.ch`, `nextenic.ch` | `contact@nextenic.ch` | `G-0BX61VLTJ4` |
+| `www.nextenic.com`, `nextenic.com` | `contact@nextenic.com` | `G-QDM0RXR00H` |
+| localhost, `*.github.io` | `contact@nextenic.ch` | disabled |
+
+Anything that cannot be resolved at runtime, such as the JSON-LD in `index.html`,
+uses the `.ch` address to match the canonical URL.
+
+## Analytics
+
+Google Analytics 4, in `src/lib/analytics.js`. Two things about the setup are
+deliberate:
+
+**The tag is loaded from JS, not pasted into `index.html`.** There are two GA4
+data streams, one per domain, so the measurement ID is not known until the
+hostname is. A hardcoded tag would also fire on localhost and on preview builds
+and pollute the property with development traffic; `isProductionHost()` gates
+that.
+
+**`send_page_view` is off and page views are sent manually.** This is a
+single-page app. Left to itself, gtag records the landing page and then never
+fires again as the visitor moves between the home page and the legal pages. The
+`Analytics` component in `App.jsx` sends one `page_view` per route change.
+
+Note that GA sets cookies, which for EU/EEA visitors is generally treated as
+requiring prior opt-in consent. There is no consent banner yet, and the privacy
+page carries a `TO FILL` marking that decision as open. Raise it with whoever
+reviews the legal pages.
 
 ## Deployment
 
@@ -212,9 +278,17 @@ Before the first run, set **Settings → Pages → Build and deployment → Sour
 
 ### Custom domain
 
-`public/CNAME` contains `nextenic.ch`. Change it to whichever domain you point at
-the site, and add the DNS records GitHub asks for. Because the site is served from
-the domain root, the Vite base path is `/`.
+`public/CNAME` contains `www.nextenic.ch`, the primary hostname. GitHub Pages
+accepts one CNAME entry, so that file sets the canonical host; point the other
+hostnames at the same deployment with DNS and GitHub will redirect them.
+
+For `www` as primary you want a `CNAME` record for `www` pointing at
+`<user>.github.io`, plus the four `A` records (or an `ALIAS`/`ANAME`) on the apex
+so `nextenic.ch` redirects to `www`. Repeat for `nextenic.com`. The site works on
+all four hostnames either way, since the per-domain behaviour is resolved from the
+hostname at runtime rather than at build time.
+
+Because the site is served from the domain root, the Vite base path stays `/`.
 
 If you drop the custom domain and serve from `https://<user>.github.io/<repo>/`
 instead, delete `public/CNAME` and set the base path when building:
@@ -234,6 +308,23 @@ its basename from `import.meta.env.BASE_URL`.
 GitHub Pages has no server-side rewrite, so a hard load of `/impressum` would 404.
 A small Vite plugin copies `dist/index.html` to `dist/404.html` at build time and
 Pages serves that, letting the client router resolve the path.
+
+### Legal page URLs
+
+Both legal pages answer to their German and their English name. The German paths
+are canonical because that is what Swiss visitors look for and what the products
+already link to; the English paths redirect rather than duplicating, so the two do
+not compete as separate URLs.
+
+| Canonical | Redirects to it |
+| --- | --- |
+| `/impressum` | `/imprint`, `/legal-notice` |
+| `/datenschutz` | `/privacy`, `/privacy-policy` |
+
+The page headings are localised even though the URLs are not: English shows
+"Imprint" and "Privacy Policy" with the German term as the standfirst, French
+shows "Mentions légales" and "Politique de confidentialité", Italian "Note legali"
+and "Informativa sulla privacy". Footer links follow the active language.
 
 ## Performance notes
 

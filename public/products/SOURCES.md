@@ -32,7 +32,7 @@ Listing: <https://apps.shopify.com/swiss-shipping-labels>
 
 | File | Original source URL | Original |
 | --- | --- | --- |
-| `app-icon-192.webp` | <https://cdn.shopify.com/app-store/listing_images/49a7da2f5f1af407d002b15b55189273/icon/CMmA8oXs6pUDEAE=.png> | 1200×1200 PNG |
+| `app-icon-192.webp` | <https://swiss-shipping-labels.ch/icon.jpg> | 771×774. Served with a `.jpg` extension while the bytes are PNG. |
 | `screenshot-1-*.webp` | <https://cdn.shopify.com/app-store/listing_images/cd39e14ab39e1461f36a4011f201d615/desktop_screenshot/CI3n2pmuk5UDEAE=.jpeg> | 1600×900 |
 | `screenshot-2-*.webp` | <https://cdn.shopify.com/app-store/listing_images/cd39e14ab39e1461f36a4011f201d615/desktop_screenshot/CIPzz5muk5UDEAE=.jpeg> | 1600×900 |
 | `screenshot-3-*.webp` | <https://cdn.shopify.com/app-store/listing_images/cd39e14ab39e1461f36a4011f201d615/desktop_screenshot/CJfW8Zmuk5UDEAE=.jpeg> | 1600×900 |
@@ -40,9 +40,26 @@ Listing: <https://apps.shopify.com/swiss-shipping-labels>
 | `screenshot-5-*.webp` | <https://cdn.shopify.com/app-store/listing_images/cd39e14ab39e1461f36a4011f201d615/desktop_screenshot/CNX85Zmuk5UDEAE=.jpeg> | 1600×900 |
 | `screenshot-6-*.webp` | <https://cdn.shopify.com/app-store/listing_images/cd39e14ab39e1461f36a4011f201d615/desktop_screenshot/COOquZmuk5UDEAE=.jpeg> | 1600×900 |
 
-The site's own `https://swiss-shipping-labels.ch/icon.jpg` was also downloaded but
-is not used: it is served with a `.jpg` extension while the bytes are PNG, and the
-App Store icon above is the higher-resolution version of the same mark.
+### Which icon is the real one
+
+The first version of this site used the Shopify App Store listing icon at
+<https://cdn.shopify.com/app-store/listing_images/49a7da2f5f1af407d002b15b55189273/icon/CMmA8oXs6pUDEAE=.png>
+on the assumption that it was simply a higher-resolution copy of the same mark.
+It is not. That listing image is an **older, superseded logo**: a dark crescent
+formed from two overlapping circles on a near-black square. It rendered on the
+Nextenic site as a grey blob that looked nothing like the product.
+
+The current logo is the one the product serves itself at `/icon.jpg`: a yellow
+rounded square holding a barcode label with motion lines. That is what ships here.
+
+If the App Store listing is ever updated with the yellow mark, the CDN copy would
+be preferable, since it is 1200×1200 against 771×774. Compare the two before
+swapping; do not assume the listing is current.
+
+The `.jpg` extension on the source is wrong at the origin, not a mistake in this
+repo. The bytes are PNG, and the file is re-encoded to WebP here regardless. The
+non-square 771×774 source is resized to a flat 192×192, a 0.4 % horizontal
+squeeze that is not detectable at the size it renders.
 
 ## Re-fetching
 

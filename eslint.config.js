@@ -43,11 +43,12 @@ export default [
     languageOptions: { globals: globals.node },
   },
   {
-    /* The i18n module deliberately exports the provider component alongside the
-       useI18n hook and the language list. Splitting them to satisfy the fast
-       refresh heuristic would scatter one concern across three files for a
+    /* These two modules deliberately export a provider component alongside its
+       hook and helpers: I18nProvider with useI18n and the language list,
+       ThemeProvider with useTheme and resolveTheme. Splitting them to satisfy the
+       fast refresh heuristic would scatter one concern across several files for a
        dev-only convenience. */
-    files: ["src/lib/i18n.jsx"],
+    files: ["src/lib/i18n.jsx", "src/lib/theme.jsx"],
     rules: { "react-refresh/only-export-components": "off" },
   },
 ];

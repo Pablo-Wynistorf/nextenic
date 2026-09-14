@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Nextenic">
+  <!-- Nextenic logomark, same geometry as src/components/Wordmark.jsx: the N is
+       drawn on a 32-unit grid (uprights 5 wide at x=5 and x=22, cap height
+       y=5..27) and mapped into this 64-unit tile with x' = 4 + 1.75x. The
+       coordinates are written out flat rather than wrapped in a transform,
+       because some icon rasterisers ignore group transforms.
+
+       Colours are baked in: a favicon cannot read CSS custom properties. They
+       are graphite-900, paper and signal-500 from src/styles/tokens.css. The
+       tile is deliberate — a transparent mark disappears into either light or
+       dark browser chrome, a dark tile holds up against both.
+
+       apple-touch-icon.png is this artwork with square corners (iOS masks its
+       own rounding) at 180px. favicon.ico holds 16/32/48; the 16px bitmap is
+       redrawn on a 16-unit grid with 3px uprights at x=2 and x=11 so the stems
+       land on whole pixels — scaling this file down to 16 antialiases them to
+       grey instead. Regenerate with ImageMagick after any change here. -->
+  <rect width="64" height="64" rx="13" fill="#0d0f12"/>
+  <path d="M12.75 12.75H23.95L51.25 51.25H40.05L12.75 12.75Z" fill="#ff4a26"/>
+  <path d="M12.75 12.75H21.5V51.25H12.75V12.75ZM42.5 12.75H51.25V51.25H42.5V12.75Z" fill="#fbfaf8"/>
+</svg>

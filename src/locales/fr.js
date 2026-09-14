@@ -8,7 +8,7 @@
 export default {
   meta: {
     title:
-      "Nextenic GmbH — des logiciels pour vos courriels et vos colis",
+      "Nextenic GmbH, des logiciels pour vos courriels et vos colis",
     description:
       "Nextenic GmbH est une société de logiciels établie à Berne, en Suisse. Nous développons et exploitons deux produits : MailRift, hébergement de courriel sur votre propre domaine, et Swiss Shipping Labels, étiquettes de La Poste Suisse dans Shopify.",
   },
@@ -20,7 +20,7 @@ export default {
     contact: "Contact",
     openMenu: "Ouvrir le menu",
     closeMenu: "Fermer le menu",
-    home: "Nextenic — accueil",
+    home: "Nextenic, accueil",
     language: "Langue",
     skipToContent: "Aller au contenu",
     themeToDark: "Passer au thème sombre",
@@ -42,7 +42,7 @@ export default {
     languages: "langues dans nos produits",
     fromPrice: "CHF par mois et par domaine pour MailRift",
     carriers:
-      "transporteur intégré — La Poste Suisse, via son interface officielle",
+      "transporteur intégré : La Poste Suisse, via son interface officielle",
   },
 
   marquee: {
@@ -92,7 +92,7 @@ export default {
             "Client webmail complet : fils de discussion, rédaction enrichie, dossiers et recherche",
             "Agenda et contacts pour chaque boîte aux lettres",
             "Applications iOS et Android avec notifications push à l’arrivée du courrier",
-            "Alias plus illimités — vous+n’importequoi@votredomaine.ch fonctionne sans configuration",
+            "Alias plus illimités : vous+n’importequoi@votredomaine.ch fonctionne sans configuration",
           ],
         },
         {
@@ -116,7 +116,7 @@ export default {
       ],
       audience: {
         lead: "Équipes et entreprises dont le courriel tourne sur leur propre domaine",
-        body: "Le forfait Starter est présenté comme une entrée de gamme pour un seul petit domaine. Les interfaces programmables — API REST, serveur MCP, SDK et webhooks — figurent dans les forfaits supérieurs, pour celles et ceux qui traitent le courriel comme de l’infrastructure.",
+        body: "Le forfait Starter est présenté comme une entrée de gamme pour un seul petit domaine. Les interfaces programmables (API REST, serveur MCP, SDK et webhooks) figurent dans les forfaits supérieurs, pour celles et ceux qui traitent le courriel comme de l’infrastructure.",
       },
       trial:
         "Un essai gratuit par compte sur un sous-domaine de test : une boîte aux lettres, 1 Mo de stockage, trois courriels sortants, sans carte de crédit.",
@@ -128,7 +128,7 @@ export default {
       logoAlt: "Logo MailRift",
       screenshots: {
         inbox: {
-          caption: "Webmail — fils de discussion, dossiers, recherche",
+          caption: "Webmail : fils de discussion, dossiers, recherche",
           alt: "Boîte de réception webmail MailRift avec un fil de discussion, l’arborescence des dossiers et la liste des messages",
         },
         compose: {
@@ -230,8 +230,8 @@ export default {
     eyebrow: "À propos",
     heading: "Une petite société de logiciels suisse",
     p1: "Nextenic GmbH est une société de logiciels établie à Berne, en Suisse. Nous possédons et exploitons deux produits, vendus directement aux entreprises qui les utilisent.",
-    p2: "Techniquement, ils n’ont rien en commun : l’un est un hébergement de courriel, l’autre une application Shopify pour imprimer des étiquettes de La Poste Suisse. Ce qu’ils partagent, c’est le type de problème traité — le travail administratif qui se glisse entre une entreprise et ses clients, fait correctement et facturé sans mauvaise surprise.",
-    p3: "MailRift tourne sur une infrastructure cloud en Allemagne et est conforme au RGPD. Swiss Shipping Labels dialogue avec l’interface officielle de La Poste Suisse et utilise la licence d’affranchissement propre à chaque marchand. Aucun des deux produits n’est une revente.",
+    p2: "Techniquement, ils n’ont rien en commun : l’un est un hébergement de courriel, l’autre une application Shopify pour imprimer des étiquettes de La Poste Suisse. Ce qu’ils partagent, c’est le type de problème traité : le travail administratif qui se glisse entre une entreprise et ses clients, fait correctement et facturé sans mauvaise surprise.",
+    p3: "MailRift tourne sur AWS à Francfort, en Allemagne, et est conforme au RGPD. Swiss Shipping Labels dialogue avec l’interface officielle de La Poste Suisse et utilise la licence d’affranchissement propre à chaque marchand. Aucun des deux produits n’est une revente.",
     positions: [
       {
         title: "Nous exploitons ce que nous construisons",
@@ -266,70 +266,126 @@ export default {
     products: "Produits",
     legal: "Mentions légales",
     contact: "Contact",
-    impressum: "Impressum",
-    datenschutz: "Datenschutz",
+    impressum: "Mentions légales",
+    datenschutz: "Confidentialité",
     rights: "© {year} Nextenic GmbH",
     trademark:
       "Swiss Shipping Labels est une offre indépendante, ni exploitée ni approuvée par La Poste Suisse (Schweizerische Post AG). Shopify est une marque de Shopify Inc.",
   },
 
+  /**
+   * The applicable-law clause and the Swiss Post disclaimer follow the French
+   * version Swiss Shipping Labels already publishes.
+   */
   legal: {
     back: "Retour à nextenic",
-    toFill: "encore à compléter",
     impressum: {
-      title: "Impressum",
-      subtitle: "Mentions légales",
-      company: "Société",
+      title: "Mentions légales",
+      subtitle: "Impressum",
+      uwgNote: "Mentions légales selon l’art. 3 al. 1 let. s LCD.",
+      operator: "Exploitant",
+      operatorIntro:
+        "Ce site web et les produits Nextenic sont exploités depuis la Suisse par :",
+      legalForm: "Forme juridique et enregistrement",
+      legalFormItems: [
+        "Forme juridique : raison individuelle (Einzelunternehmen), exploitée sous le nom propre du titulaire",
+        "Non inscrite au registre du commerce suisse",
+        "Actuellement sans numéro d’identification des entreprises (IDE) ni assujettissement à la TVA",
+      ],
       contact: "Contact",
-      register: "Registre du commerce",
-      registeredOffice: "Siège : Berne, Suisse",
-      registerPending:
-        "Numéro d’identification des entreprises (IDE) et numéro de TVA : pas encore disponibles. Ils seront publiés ici dès leur attribution.",
-      management: "Direction",
-      managingDirector: "Directeur : Pablo Wynistorf",
       responsible: "Responsable du contenu",
       responsibleBody: "Pablo Wynistorf, à l’adresse ci-dessus.",
-      ourProducts: "Produits exploités par Nextenic GmbH",
+      dataProtection: "Contact pour la protection des données",
+      dataProtectionBody:
+        "Pour toute question de protection des données et pour exercer vos droits au titre de la loi fédérale suisse sur la protection des données (LPD) et, le cas échéant, du règlement général européen sur la protection des données (RGPD), utilisez l’adresse de contact ci-dessus.",
+      euRep: "Représentant dans l’Union européenne (art. 27 RGPD)",
+      euRepBody:
+        "L’exploitant est établi en Suisse, hors de l’UE/EEE. Dans la mesure où nos produits sont proposés à des consommateurs de l’UE/EEE, un représentant dans l’Union au sens de l’art. 27 RGPD est prévu.",
+      euRepPending:
+        "Pas encore désigné. Jusqu’à sa désignation, les personnes concernées et les autorités de l’UE peuvent s’adresser directement à l’exploitant aux coordonnées ci-dessus.",
+      law: "Droit applicable",
+      lawText:
+        "Le droit suisse est applicable. Le for juridique est Berne, Suisse.",
+      liabilityContent: "Responsabilité du contenu",
+      liabilityContentBody:
+        "Les contenus de ce site sont établis avec soin. Nous n’assumons toutefois aucune responsabilité quant à leur exactitude, leur exhaustivité ou leur actualité. En tant qu’exploitant, nous sommes responsables de nos propres contenus conformément au droit commun. Nous ne sommes pas tenus de surveiller les informations de tiers transmises ou stockées via nos services, ni de rechercher des circonstances révélant une activité illicite, sans préjudice de notre obligation de retirer ou de bloquer l’accès à une information dès que nous avons connaissance d’une violation concrète.",
+      liabilityLinks: "Responsabilité des liens",
+      liabilityLinksBody:
+        "Ce site contient des liens vers des sites externes de tiers, sur le contenu desquels nous n’avons aucune influence. Nous n’assumons donc aucune responsabilité pour ces contenus externes. La responsabilité du contenu des pages liées incombe toujours à leur fournisseur ou exploitant respectif.",
+      copyright: "Droit d’auteur",
+      copyrightBody:
+        "Les contenus et œuvres présents sur ces pages sont protégés par le droit d’auteur. Toute reproduction, modification, diffusion ou exploitation en dehors des limites du droit d’auteur requiert l’accord écrit préalable du titulaire des droits concerné.",
+      ourProducts: "Produits que nous exploitons",
       ourProductsBody:
         "Chaque produit publie ses propres mentions légales et sa propre politique de confidentialité, applicables à son utilisation.",
-      disclaimer: "Clause de non-responsabilité",
-      disclaimerNote:
-        "TO FILL : clause de responsabilité et de liens, mention de droit d’auteur, droit applicable et for juridique.",
+      hosting: "Développement et exploitation",
+      hostingBody:
+        "Nos produits sont développés et exploités depuis la Suisse. Les données clients de MailRift sont hébergées chez Amazon Web Services dans l’Union européenne (Francfort, Allemagne ; région eu-central-1). Swiss Shipping Labels fonctionne comme application Shopify et se connecte à l’interface officielle de La Poste Suisse au moyen de la licence d’affranchissement propre à chaque marchand.",
       swissPostNote:
-        "Swiss Shipping Labels est une offre indépendante, ni exploitée ni approuvée par La Poste Suisse (Schweizerische Post AG).",
+        "Swiss Shipping Labels est un service tiers indépendant, sans aucun lien avec La Poste Suisse (Die Schweizerische Post AG), ni approuvé ni associé à elle. Toutes les marques et logos de La Poste Suisse sont la propriété de leur titulaire respectif.",
     },
     datenschutz: {
-      title: "Datenschutz",
-      subtitle: "Politique de confidentialité",
+      title: "Politique de confidentialité",
+      subtitle: "Datenschutz",
+      scopeNote:
+        "Cette politique couvre ce site web, nextenic.ch et nextenic.com. Nos deux produits traitent des données personnelles dans le cadre de leur exploitation et publient leurs propres politiques. Voir la section finale.",
       controller: "Responsable du traitement",
-      controllerBody: "Nextenic GmbH, Staufferstrasse 30, 3006 Berne, Suisse.",
-      seeImpressum:
-        "D’autres informations sur la société figurent sur la page Impressum.",
-      representative:
-        "TO FILL ou supprimer : représentant en matière de protection des données dans l’UE, si nécessaire.",
+      controllerBody:
+        "Pablo Wynistorf, Staufferstrasse 30, 3006 Berne, Suisse, exploitant des produits Nextenic.",
+      seeImpressum: "D’autres informations figurent sur la page Impressum.",
+      representative: "Représentant dans l’UE (art. 27 RGPD)",
+      representativeBody:
+        "L’exploitant est établi en Suisse. Aucun représentant dans l’Union au sens de l’art. 27 RGPD n’est encore désigné. Jusque-là, les personnes concernées et les autorités de l’UE peuvent s’adresser directement à l’exploitant.",
       thisSite: "Ce site web",
       thisSiteBody:
-        "Ce site est statique. Il ne dépose aucun cookie, n’intègre ni analyse ni script de pistage, et n’a pas de formulaire de contact : l’adresse est un simple lien mailto. Vos préférences de langue et de thème sont stockées localement dans votre navigateur et ne sont jamais transmises.",
+        "Ce site est statique, sans connexion ni compte utilisateur. Vos préférences de langue et de thème sont stockées localement dans votre navigateur, dans le localStorage, et ne nous sont jamais transmises.",
+      analytics: "Mesure d’audience",
+      analyticsBody:
+        "Nous utilisons Google Analytics 4, fourni par Google Ireland Limited, pour savoir quelles pages sont lues et comment les visiteurs nous trouvent. Des cookies sont déposés dans votre navigateur et votre adresse IP est traitée, avec des données techniques telles que le type d’appareil, le navigateur, une localisation approximative déduite de l’adresse IP et les pages consultées. Les adresses IP sont raccourcies par Google avant leur enregistrement. Nous exploitons un flux de données distinct par domaine : nextenic.ch et nextenic.com sont donc mesurés séparément.",
+      analyticsTransfer:
+        "Des données peuvent être transférées à Google LLC aux États-Unis. Google s’appuie sur les clauses contractuelles types de l’UE ainsi que sur l’addendum suisse reconnu par le PFPDT, et sur les décisions d’adéquation de l’UE et de la Suisse pour les destinataires certifiés. La mesure d’audience ne fonctionne pas en développement local ni sur les versions de prévisualisation.",
+      analyticsConsentNote:
+        "TO FILL : définir l’approche du consentement. Google Analytics dépose des cookies et est généralement considéré comme soumis à un consentement préalable pour les visiteurs de l’UE/EEE, ce qui implique une bannière de consentement et la suspension du tag jusqu’à son obtention. À confirmer avec la relecture juridique, puis indiquer ici la base légale retenue.",
+      contactForm: "Formulaire de contact",
+      contactFormNote:
+        "TO FILL : un formulaire de contact est prévu mais pas encore en ligne. À sa mise en service, documenter les champs collectés, la finalité, la base légale, le destinataire des messages et leur durée de conservation.",
+      hosting: "Hébergement",
+      hostingBody:
+        "Ce site est diffusé par GitHub Pages (GitHub, Inc.). Comme tout serveur web, celui-ci traite des données techniques de connexion, dont votre adresse IP, le fichier demandé, l’heure de la requête et l’identifiant de votre navigateur, afin de livrer la page et d’assurer sa sécurité et sa stabilité. La base légale est notre intérêt légitime à exploiter un site sécurisé (art. 6 al. 1 let. f RGPD ; art. 31 LPD).",
+      fonts: "Polices de caractères",
       fontsBody:
-        "Les polices sont chargées depuis Google Fonts : votre navigateur contacte fonts.gstatic.com et cette requête transmet votre adresse IP.",
+        "Les polices sont chargées depuis Google Fonts : votre navigateur contacte fonts.gstatic.com et cette requête transmet votre adresse IP. La base légale est notre intérêt légitime à une présentation homogène.",
       fontsNote:
-        "TO FILL : confirmer ce fonctionnement, ou héberger les polices soi-même pour supprimer entièrement la requête vers un tiers.",
-      hostingNote:
-        "TO FILL : GitHub Pages (GitHub, Inc.) diffuse ce site et traite des données de journal serveur, dont les adresses IP — décrire et indiquer la base légale.",
+        "TO FILL : décider de conserver Google Fonts ou d’héberger les polices soi-même. L’auto-hébergement supprime entièrement cette requête vers un tiers et cette mention.",
       email: "Correspondance par courriel",
+      emailBody:
+        "Si vous nous écrivez, nous traitons votre adresse de courriel, votre nom si vous l’indiquez et le contenu de votre message afin de vous répondre. La base légale est notre intérêt légitime à répondre aux demandes, ou l’exécution d’un contrat si votre message en concerne un.",
       emailNote:
-        "TO FILL : ce qu’il advient d’un message envoyé à notre adresse de contact — finalité, base légale, durée de conservation.",
+        "TO FILL : indiquer la durée de conservation de la correspondance avant suppression.",
+      rights: "Vos droits",
+      rightsBody:
+        "Selon le droit qui vous est applicable, vous disposez des droits suivants, que nous accordons à tous les visiteurs quel que soit leur lieu de résidence :",
+      rightsItems: [
+        "Accès à vos données personnelles (art. 15 RGPD / art. 25 LPD)",
+        "Rectification des données inexactes (art. 16 RGPD / art. 32 LPD)",
+        "Effacement de vos données (art. 17 RGPD / art. 32 LPD)",
+        "Limitation du traitement (art. 18 RGPD)",
+        "Portabilité des données (art. 20 RGPD / art. 28 LPD)",
+        "Opposition à un traitement fondé sur des intérêts légitimes (art. 21 RGPD)",
+      ],
+      rightsContact:
+        "Pour exercer ces droits, écrivez à l’adresse de contact indiquée dans l’Impressum.",
+      complaint: "Droit de déposer une réclamation",
+      complaintBody:
+        "En Suisse, vous pouvez saisir le Préposé fédéral à la protection des données et à la transparence (PFPDT). Dans l’UE/EEE, vous pouvez saisir l’autorité de contrôle de votre pays de résidence.",
       ourProducts: "Nos produits",
       ourProductsBody:
-        "Cette politique ne couvre que ce site web. MailRift et Swiss Shipping Labels traitent des données personnelles dans le cadre de leur exploitation et publient leurs propres politiques :",
+        "MailRift et Swiss Shipping Labels traitent des données personnelles dans le cadre de leur exploitation et publient leurs propres politiques de confidentialité :",
       mailriftPolicy: "Politique de confidentialité de MailRift",
       sslPolicy: "Politique de confidentialité de Swiss Shipping Labels",
-      rights: "Vos droits",
-      rightsNote:
-        "TO FILL : droits d’accès, de rectification, d’effacement, de limitation, d’opposition et de portabilité, modalités d’exercice et autorité de surveillance compétente.",
-      changes: "Modifications",
-      changesNote:
-        "TO FILL : comment les modifications de cette politique sont publiées.",
+      changes: "Modifications de cette politique",
+      changesBody:
+        "Nous pouvons adapter cette politique à mesure que le site évolue. La version applicable est toujours celle publiée ici.",
     },
   },
 };

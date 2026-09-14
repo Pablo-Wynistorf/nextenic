@@ -247,11 +247,14 @@
     text-wrap: pretty;
   }
 
-  /* Visible, deliberate focus ring — never removed, only styled. */
+  /* Visible, deliberate focus ring. Never removed, only styled.
+
+     No border-radius here: setting one overrode the element's own radius, so the
+     ring around a rounded-full control was drawn with square corners and looked
+     like a mistake. The outline follows the element's real shape instead. */
   :focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
-    border-radius: var(--radius-xs);
   }
 
   /* Mouse users do not get the ring; keyboard users always do. */

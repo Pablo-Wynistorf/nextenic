@@ -36,10 +36,28 @@ is the product's actual differentiator and should lead the section copy.
 
 Source: `https://mailrift.io/` (meta description, `<noscript>` block, JSON-LD `FAQPage`).
 
-### Hosting location — important correction to the brief
+### Hosting location — AWS Frankfurt, confirmed on the second pass
 
-The brief said Mailrift is "hosted on AWS (do NOT describe it as Swiss-hosted)". The site
-never says "AWS" and never says "Swiss". It consistently says **Germany**:
+**Update.** The first pass only had the marketing page, which says "Germany" and
+"first-class cloud infrastructure" without naming a provider. The imprint and privacy
+pages, fetched later, name it explicitly:
+
+- `https://mailrift.io/imprint`, "Platform Development & Operation": "MailRift is developed
+  and operated from Switzerland. Customer data is hosted with Amazon Web Services in the EU
+  (Frankfurt, Germany; region eu-central-1)."
+- `https://mailrift.io/privacy`, §4 "Data Hosting & Storage Location": "Your account data,
+  emails, attachments, and associated metadata are stored and processed on Amazon Web
+  Services infrastructure located in the European Union (Frankfurt, Germany; region
+  eu-central-1). Switzerland recognises the EU/EEA as providing adequate data protection, so
+  storage within the EU does not require additional transfer safeguards under the FADP."
+- §8 names AWS as a subprocessor; Stripe processes payments.
+- §10: personal data and emails are deleted within 30 days of account deletion.
+
+So the brief's "hosted on AWS" is correct and now sourced. The marketing sections of the
+website still say "hosted in Germany" — the plain-language version — and the Impressum names
+AWS Frankfurt, matching the products' own imprint. Nothing describes it as Swiss-hosted.
+
+The original marketing-page wording, for reference:
 
 - meta description: "Hosted entirely in Germany, GDPR compliant."
 - JSON-LD: "Hosted entirely in Germany and GDPR compliant."
@@ -337,8 +355,8 @@ Stored in `/public/products/swiss-shipping-labels/`.
 
 | File | Source URL | Notes |
 | --- | --- | --- |
-| `app-icon.png` | `https://cdn.shopify.com/app-store/listing_images/49a7da2f5f1af407d002b15b55189273/icon/CMmA8oXs6pUDEAE=.png` | 1200×1200 App Store icon |
-| `icon.png` | `https://swiss-shipping-labels.ch/icon.jpg` | 771×774. Served with a `.jpg` extension but the bytes are PNG; saved as `.png`. |
+| `app-icon-192.webp` | `https://swiss-shipping-labels.ch/icon.jpg` | 771×774. Served with a `.jpg` extension but the bytes are PNG. **This is the current logo.** |
+| ~~App Store listing icon~~ | `https://cdn.shopify.com/app-store/listing_images/49a7da2f5f1af407d002b15b55189273/icon/CMmA8oXs6pUDEAE=.png` | 1200×1200. **Not used: superseded logo.** The listing still carries an older dark crescent mark, not the yellow barcode-label icon the product uses today. Higher resolution, wrong artwork. |
 | `screenshot-1.jpeg` … `screenshot-6.jpeg` | `https://cdn.shopify.com/app-store/listing_images/cd39e14ab39e1461f36a4011f201d615/desktop_screenshot/*.jpeg?height=900&quality=90&width=1600` | 6 listing screenshots, 1600×900 each |
 
 Observed visual identity: Swiss Post yellow (`#FFD800`-range) with black type on light
@@ -363,6 +381,75 @@ No Nextenic GmbH commercial-register entry, founding date, headcount or address 
 so the website states none of those.
 
 ---
+
+## 3a. Legal text, consolidated from the products' own imprints
+
+The Nextenic Impressum and Datenschutz pages are built from the legal text the company
+already publishes, not drafted from scratch. Sources and what each supplied:
+
+### `https://swiss-shipping-labels.ch/impressum`
+
+Client-rendered; the values are held in the page bundle, with the operator fields stored as
+character-code arrays that decode to:
+
+| Field | Value |
+| --- | --- |
+| Operator | Pablo Wynistorf |
+| Street | Staufferstrasse 30 |
+| City | 3006 Bern |
+| Country | Switzerland |
+| Contact | `contact@swiss-shipping-labels.ch` |
+
+- Applicable law, published in all four languages: "Swiss law applies. Place of jurisdiction
+  is Bern, Switzerland." / "Es gilt Schweizer Recht. Gerichtsstand ist Bern, Schweiz." / "Le
+  droit suisse est applicable. Le for juridique est Berne, Suisse." / "Si applica il diritto
+  svizzero. Il foro competente è Berna, Svizzera."
+- Swiss Post disclaimer, also in four languages. The fuller version on
+  `/privacy` adds: "All Swiss Post trademarks and logos are the property of their respective
+  owner. This app merely provides a service that integrates with the Swiss Post API."
+- The page sets `robots: noindex, nofollow`.
+- Privacy policy last updated 27 July 2026.
+
+### `https://mailrift.io/imprint`
+
+- Headed "Impressum / Legal Notice (gemäss Art. 3 Abs. 1 lit. s UWG)".
+- **Legal form and registration**, verbatim: "Legal form: sole proprietorship
+  (Einzelunternehmen), operated under the owner's own name" · "Not entered in the Swiss
+  Commercial Register (Handelsregister)" · "No enterprise identification number (UID) and no
+  VAT/MWST registration at this time".
+- **Representative in the EU (Art. 27 GDPR)**: the page carries `[TO BE APPOINTED]`,
+  `[ADDRESS IN AN EU MEMBER STATE]` and `[EU REP CONTACT EMAIL]`, with the note "This
+  representative must be appointed before serving EU/EEA users."
+- Liability for Content, Liability for Links and Copyright clauses, reproduced in substance.
+- Data protection contact: `support@mailrift.io`, citing FADP and, where applicable, GDPR.
+
+### `https://mailrift.io/privacy`
+
+Section list: Overview & Applicable Law · Data Controller · Representative in the EU ·
+Data Hosting & Storage Location · Data We Collect · Purpose of Processing · Legal Basis
+(GDPR) & FADP Principles · Subprocessors & Data Sharing · reCAPTCHA · Data Retention · Your
+Rights · Right to Lodge a Complaint · Data Breach Notification · Intended for Consumers ·
+Cookies & Local Storage · Changes to This Policy · Contact.
+
+The rights list on the Nextenic privacy page uses the same article pairings this page cites:
+access (Art. 15 GDPR / Art. 25 FADP), rectification (16/32), erasure (17/32), restriction
+(18), portability (20/28), objection (21).
+
+### Conflict to resolve: "GmbH" versus the published legal form
+
+The brief and the site chrome call the company **Nextenic GmbH**. Both product imprints
+describe a **sole proprietorship, not entered in the commercial register, with no UID and no
+VAT registration**, operated by Pablo Wynistorf at the same Bern address.
+
+These cannot both be true: a Swiss GmbH comes into existence only on registration in the
+commercial register, and would have a UID. The Impressum therefore reproduces the published
+legal form rather than asserting a GmbH that the register does not show, and flags the
+question. Either the GmbH is in formation — in which case the suffix should not be used
+publicly until registration — or the imprints on both products are out of date.
+
+Also worth noting: each product publishes its own contact address
+(`contact@swiss-shipping-labels.ch`, `support@mailrift.io`), distinct from the company address
+`contact@nextenic.ch` / `.com` used on this site.
 
 ## 4. Deliberately excluded
 

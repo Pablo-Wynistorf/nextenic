@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import Home from "@/pages/Home";
 import Impressum from "@/pages/Impressum";
 import Datenschutz from "@/pages/Datenschutz";
 import { useI18n } from "@/lib/i18n";
+import { initAnalytics, trackPageView } from "@/lib/analytics";
 import { prefersReducedMotion } from "@/lib/motion";
 
 /**
@@ -56,6 +57,31 @@ function DocumentMeta() {
   return null;
 }
 
+/**
+ * Loads gtag.js once and records a page view on every client-side navigation.
+ *
+ * The measurement ID is picked from the hostname, because .ch and .com are
+ * separate GA4 streams. See src/lib/analytics.js.
+ *
+ * The page view fires in a separate effect from the loader and depends on the
+ * path, so the initial view and every subsequent route change are both counted
+ * exactly once. Titles are set by DocumentMeta and LegalPage, so this runs after
+ * them in effect order and reports the title the visitor actually sees.
+ */
+function Analytics() {
+  const { pathname, search } = useLocation();
+
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
+  useEffect(() => {
+    trackPageView(`${pathname}${search}`);
+  }, [pathname, search]);
+
+  return null;
+}
+
 export default function App() {
   const { t } = useI18n();
 
@@ -71,12 +97,27 @@ export default function App() {
 
       <ScrollBehaviour />
       <DocumentMeta />
+      <Analytics />
       <SiteHeader />
 
       <Routes>
         <Route path="/" element={<Home />} />
+
+        {/* Both pages answer to their German and their English name. The German
+            paths are canonical because that is what Swiss visitors look for and
+            what the products already link to; the English paths redirect rather
+            than duplicating, so the two do not compete as separate URLs. */}
         <Route path="/impressum" element={<Impressum />} />
+        <Route path="/imprint" element={<Navigate to="/impressum" replace />} />
+        <Route path="/legal-notice" element={<Navigate to="/impressum" replace />} />
+
         <Route path="/datenschutz" element={<Datenschutz />} />
+        <Route path="/privacy" element={<Navigate to="/datenschutz" replace />} />
+        <Route
+          path="/privacy-policy"
+          element={<Navigate to="/datenschutz" replace />}
+        />
+
         {/* Unknown paths show the home page rather than a dead end. */}
         <Route path="*" element={<Home />} />
       </Routes>

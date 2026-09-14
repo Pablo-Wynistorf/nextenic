@@ -14,9 +14,51 @@ import SplitText from "@/components/SplitText";
  * WebGL to become readable.
  */
 const WebThreads = lazy(() => import("@/components/WebThreads"));
+
+/**
+ * Filament palettes.
+ *
+ * Change PALETTE below to switch. Each entry gives the three shader colours for
+ * dark and for light: color1 is the outer thread, color2 the mid blend, color3
+ * the bright core. The core is what sets the overall impression, since that is
+ * where the brightest pixels land.
+ *
+ * "steel" is the default. The site already has exactly one accent, the vermilion
+ * used on buttons, links and rules. Putting that same accent into a large
+ * animated field made it the loudest thing on the page and gave the whole hero a
+ * warm cast, which is what an accent is not supposed to do. A near-neutral field
+ * lets the artwork read as light and structure while the accent keeps its job of
+ * marking the things you can click.
+ */
+const PALETTES = {
+  /* Neutral silver, faint cool tint. Nothing competes with the accent. */
+  steel: {
+    dark: { color1: "#39414f", color2: "#8e9aad", color3: "#eef2f7" },
+    light: { color1: "#6b7482", color2: "#39414f", color3: "#12151a" },
+  },
+  /* Colder and more technical, a blue-white filament. */
+  ice: {
+    dark: { color1: "#2b3a4f", color2: "#6f9fd8", color3: "#dcecff" },
+    light: { color1: "#5a6b80", color2: "#2f5f96", color3: "#101a26" },
+  },
+  /* Warm brass, nods to the Swiss Post yellow without quoting it. */
+  brass: {
+    dark: { color1: "#3d3728", color2: "#b8923f", color3: "#f6e2b0" },
+    light: { color1: "#6d5f3c", color2: "#8a6a1f", color3: "#1a150a" },
+  },
+  /* The previous look: the brand vermilion, at full strength. */
+  vermilion: {
+    dark: { color1: "#333a44", color2: "#ff4a26", color3: "#ff7d5c" },
+    light: { color1: "#5b6472", color2: "#c9330f", color3: "#12151a" },
+  },
+};
+
+const PALETTE = "steel";
 import { products } from "@/lib/products";
 import { useI18n } from "@/lib/i18n";
+import { useTheme } from "@/lib/theme";
 import { EASE_OUT_EXPO, useReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 /**
  * Hero.
@@ -41,7 +83,10 @@ import { EASE_OUT_EXPO, useReducedMotion } from "@/lib/motion";
  */
 export default function Hero() {
   const { t, lang } = useI18n();
+  const { resolved } = useTheme();
   const reduced = useReducedMotion();
+  const isLight = resolved === "light";
+  const threads = (PALETTES[PALETTE] ?? PALETTES.steel)[isLight ? "light" : "dark"];
   /* Everything after the headline waits for it, so the hero resolves as one
      movement rather than several things arriving at once. */
   const [headlineDone, setHeadlineDone] = useState(false);
@@ -71,40 +116,105 @@ export default function Hero() {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
         {!reduced && (
           <div
-            className="absolute inset-y-0 right-0 w-full opacity-90 sm:w-[78%]"
+            className={cn(
+              "absolute inset-y-0 right-0 w-full sm:w-[78%]",
+              isLight ? "opacity-100" : "opacity-90",
+            )}
             style={{
-              maskImage:
-                "linear-gradient(to right, transparent 0%, black 34%, black 100%)",
+              /* The light branch outputs an opaque fill, so the mask is what
+                 blends it into the page. It ramps a little later than dark to keep
+                 the strokes off the text column, but not so late that the artwork
+                 is cropped down to a corner. */
+              maskImage: isLight
+                ? "linear-gradient(to right, transparent 0%, black 44%, black 100%)"
+                : "linear-gradient(to right, transparent 0%, black 34%, black 100%)",
             }}
           >
             <Suspense fallback={null}>
               <WebThreads
-                /* Graphite core, vermilion mid, warm white highlight — the
-                   brand's two colours and nothing else. */
-                color1="#3a4150"
-                color2="#ff4a26"
-                color3="#ffd9cf"
+                /* Remounted on theme change. The component builds its shader
+                   program once and reads lightMode as a uniform, but the two
+                   branches need different colour inputs entirely, so a clean
+                   rebuild is more predictable than pushing new uniforms into a
+                   program set up for the other mode. */
+                key={resolved}
+                /* The shader has two entirely different output paths, and they
+                   want opposite inputs.
+                
+                   On dark it adds light: the accumulated glow is the final colour,
+                   so modest brightness already reads as bright filaments.
+                
+                   On light it converts that same glow into ink coverage over a
+                   background colour:
+                
+                     mapped   = 1 - exp(-col * 1.3)
+                     energy   = max(mapped) * opacity
+                     coverage = smoothstep(0.18, 0.72, energy) squared
+                
+                   Coverage is the only thing that makes a stroke visible, the
+                   smoothstep discards anything under 0.18, and squaring crushes
+                   the midtones. Dialling brightness and opacity down, which is the
+                   instinct on a pale canvas, pushes energy below the knee and the
+                   filaments vanish into hairlines. Light mode therefore needs more
+                   energy than dark, not less; the tone map saturates, so pushing
+                   brightness past 1 compresses rather than clips.
+                
+                   Restraint comes from the ink colours and the mask instead. */
+                lightMode={isLight}
+                backgroundColor={isLight ? "#fbfaf8" : "#08090b"}
+                /* See PALETTES at the top of this file to change the colourway. */
+                color1={threads.color1}
+                color2={threads.color2}
+                color3={threads.color3}
                 fanMode="right"
-                threadCount={7}
-                speed={0.26}
-                frequency={4.2}
-                spread={0.3}
+                /* Fewer, calmer arcs. Seven threads at frequency 4.2 filled the
+                   whole right half with crossing loops; six at 3.4 leaves space
+                   between them, which is what makes individual strokes readable
+                   rather than a mass of light. */
+                threadCount={6}
+                /* Roughly half the previous rate. The motion should be noticed
+                   only after a second or two of looking, not compete with the
+                   headline arriving. */
+                speed={0.12}
+                frequency={3.4}
+                spread={0.24}
                 taper={1.0}
                 position={0.52}
-                glow={0.045}
-                falloff={0.55}
-                thickness={1.0}
-                brightness={0.85}
-                opacity={0.95}
+                /* Definition comes from these three together: a tighter glow
+                   radius, a steeper falloff, and a thinner core. The previous
+                   values bloomed until neighbouring filaments merged and the
+                   bright areas clipped to flat white. */
+                glow={isLight ? 0.03 : 0.022}
+                falloff={isLight ? 0.68 : 0.78}
+                thickness={isLight ? 1.05 : 0.8}
+                brightness={isLight ? 1.3 : 0.62}
+                opacity={1}
                 mirror={false}
-                shimmer
+                /* Shimmer added a second, unrelated oscillation on top of the
+                   drift, which read as flicker once the lines got crisper. */
+                shimmer={false}
                 grain={false}
+                /* The shader mixes the fan's pinch point toward the cursor by
+                   mouseStrength * active, and lifts brightness near it. 0.45 makes
+                   the bend clearly readable without the whole composition
+                   lurching when the pointer crosses the hero. */
                 mouseInteraction
-                mouseStrength={0.4}
+                mouseStrength={0.45}
               />
             </Suspense>
           </div>
         )}
+
+        {/* Scrim. The filaments sweep far enough left at wide viewports to cross
+            the headline; this keeps the type column sitting on clean canvas
+            without having to shrink the artwork. */}
+        <div
+          className="absolute inset-y-0 left-0 w-full lg:w-[62%]"
+          style={{
+            background:
+              "linear-gradient(to right, var(--canvas) 0%, var(--canvas) 34%, color-mix(in oklab, var(--canvas) 72%, transparent) 62%, transparent 100%)",
+          }}
+        />
 
         <div
           className="grid-rule absolute inset-0 opacity-70"

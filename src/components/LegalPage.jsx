@@ -14,12 +14,12 @@ import { useI18n } from "@/lib/i18n";
  * Sets the document title, since the site is client-rendered and the tab label
  * would otherwise stay on the home title.
  */
-export default function LegalPage({ title, subtitle, children }) {
+export default function LegalPage({ title, subtitle, note, children }) {
   const { t } = useI18n();
 
   useEffect(() => {
     const previous = document.title;
-    document.title = `${title} — Nextenic GmbH`;
+    document.title = `${title} · Nextenic GmbH`;
     return () => {
       document.title = previous;
     };
@@ -43,6 +43,11 @@ export default function LegalPage({ title, subtitle, children }) {
           <div className="lg:col-span-4">
             <Eyebrow>{subtitle}</Eyebrow>
             <h1 className="mt-6 text-h2 font-semibold text-primary">{title}</h1>
+            {note && (
+              <p className="mt-6 max-w-measure text-caption text-tertiary">
+                {note}
+              </p>
+            )}
           </div>
 
           <div className="max-w-prose lg:col-span-7 lg:col-start-6">{children}</div>
@@ -56,8 +61,11 @@ export default function LegalPage({ title, subtitle, children }) {
 export function LegalSection({ heading, children }) {
   return (
     <section className="border-t border-line py-8 first:border-t-0 first:pt-0">
-      <h2 className="text-h4 font-medium tracking-[-0.01em]">{heading}</h2>
-      <div className="mt-4 space-y-4 text-body-sm text-secondary">{children}</div>
+      {/* Heading is optional: the closing review note is a section without one. */}
+      {heading && <h2 className="text-h4 font-medium tracking-[-0.01em]">{heading}</h2>}
+      <div className={heading ? "mt-4 space-y-4 text-body-sm text-secondary" : "space-y-4 text-body-sm text-secondary"}>
+        {children}
+      </div>
     </section>
   );
 }
